@@ -272,11 +272,12 @@ from anki.importing.wcu import WCUImporter
 from anki.importing.supermemo_xml import SupermemoXmlImporter
 from anki.importing.dingsbums import DingsBumsImporter
 
-Importers = (
+Importers = [
     (_("Text separated by tabs or semicolons (*)"), TextImporter),
     (_("Anki Deck (*.anki)"), Anki10Importer),
     (_("Mnemosyne Deck (*.mem)"), Mnemosyne10Importer),
     (_("CueCard Deck (*.wcu)"), WCUImporter),
     (_("Supermemo XML export (*.xml)"), SupermemoXmlImporter),
-    (_("DingsBums?! Deck (*.xml)"), DingsBumsImporter),
-    )
+    # Hack: should be "DingsBums?!" but QT appears to take offence at the punctuation
+    (_("DingsBums Deck (*.xml)"), DingsBumsImporter),
+    ]
