@@ -3786,6 +3786,7 @@ update cards set type = type - 3 where type between 0 and 2 and priority = -3"""
             engine = create_engine(path,
                                    poolclass=NullPool,
                                    connect_args={'timeout': 60})
+            engine.execute("pragma synchronous = off")
         session = sessionmaker(bind=engine,
                                autoflush=False,
                                autocommit=True)
