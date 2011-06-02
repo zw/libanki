@@ -3779,8 +3779,11 @@ update cards set type = type - 3 where type between 0 and 2 and priority = -3"""
             path = "sqlite:///" + path
         if pool:
             # open and lock connection for single use
+            from sqlalchemy.pool import SingletonThreadPool
+            # temporary tables are effectively useless with the default
+            # settings in 0.7, so we need to force the pool class
             engine = create_engine(path, connect_args={'timeout': 0},
-                                   strategy="threadlocal")
+                                   poolclass=SingletonThreadPool)
         else:
             # no pool & concurrent access w/ timeout
             engine = create_engine(path,
