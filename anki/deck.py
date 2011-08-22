@@ -3347,22 +3347,24 @@ select id from fields where factId not in (select id from facts)""")
 update fields set ordinal = (select ordinal from fieldModels
 where id = fieldModelId)""")
             # fix problems with stripping html
-            self.updateProgress(_("Rebuilding QA cache..."))
-            fields = self.s.all("select id, value from fields")
-            newFields = []
-            for (id, value) in fields:
-                newFields.append({'id': id, 'value': tidyHTML(value)})
-            self.s.statements(
-                "update fields set value=:value where id=:id",
-                newFields)
+            self.updateProgress(_("Rebuilding QA cache (NOTE: tidyHTML() disabled to preserve Markdown)..."))
+            time.sleep(3)
+            #fields = self.s.all("select id, value from fields")
+            #newFields = []
+            #for (id, value) in fields:
+            #    newFields.append({'id': id, 'value': tidyHTML(value)})
+            #self.s.statements(
+            #    "update fields set value=:value where id=:id",
+            #    newFields)
             # regenerate question/answer cache
             for m in self.models:
                 self.updateCardsFromModel(m, dirty=False)
             # force a full sync
+            # No, don't; I don't use Anki's sync, and losing last modified data is really annoying.
             self.s.flush()
-            self.s.statement("update cards set modified = :t", t=time.time())
-            self.s.statement("update facts set modified = :t", t=time.time())
-            self.s.statement("update models set modified = :t", t=time.time())
+            #self.s.statement("update cards set modified = :t", t=time.time())
+            #self.s.statement("update facts set modified = :t", t=time.time())
+            #self.s.statement("update models set modified = :t", t=time.time())
             self.lastSync = 0
             # rebuild
             self.updateProgress(_("Rebuilding types..."))
