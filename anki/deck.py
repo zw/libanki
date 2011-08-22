@@ -1444,7 +1444,8 @@ combinedDue > :now and due < :now""", now=time.time())
                    empty['tags'] = ""
                    local['tags'] = fact.tags
                    try:
-                       if (render(format, local) ==
+                       if (format.find('f.') == -1 and \
+                           render(format, local) ==
                            render(format, empty)):
                            ok = False
                            break
